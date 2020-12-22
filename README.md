@@ -6,4 +6,6 @@ Two parameters are varied interactively: pumping power and photon lifetime in a 
 
 The plotted values are:
 
-N_0
+1) N<sub>0</sub>
+
+2) N<sub>s</sub>
