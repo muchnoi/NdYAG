@@ -108,7 +108,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     else:
       self.population.plot(self.SdM.x, self.SdM.y1, color='b')
       self.population.plot(self.SdM.x, self.SdM.y2, color='r')
-      self.population.legend(["$N/N_S$ [%]", "$N_0/N_S$ [%]"], loc=2)
+      self.population.legend(["$N/N_s$ [%]", "$N_0/N_s$ [%]"], loc=2)
 
     self._radiation.clear()
     self._radiation.grid(True)
