@@ -8,10 +8,10 @@ The plotted values are:
 
 1) N - instant level of inverse population 
 
-2) N<sub>s</sub> - achievable inverse population with current pump speed and no cavity 
+2) N<sub>0</sub> - achievable inverse population with current pump speed and no cavity 
 
-3) N<sub>0</sub> - inverse population in case of continuous wave generation 
+3) N<sub>cw</sub> - inverse population in case of continuous wave generation 
 
 4) U - instant level of laser power 
 
-5) U<sub>0</sub> - laser power in case of continuous wave generation 
+5) U<sub>cw</sub> - laser power in case of continuous wave generation 
