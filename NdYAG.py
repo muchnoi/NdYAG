@@ -71,27 +71,43 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                      QtWidgets.QLabel(), QtWidgets.QSlider(QtCore.Qt.Horizontal)]
     layout.addWidget(self.canvas)
     self.addToolBar(NavigationToolbar(self.canvas, self))
+    self.SaveAs = QtWidgets.QPushButton('Save raw data')
+    self.canvas.toolbar.addWidget(self.SaveAs)
     for el in self.controls: 
       layout.addWidget(el)
       el.setMaximumHeight(25)
     for w in [1,3]:
       self.controls[w].setMinimum(0)
-      self.controls[w].setMaximum(99)
+      self.controls[w].setMaximum(199)
       self.controls[w].setSingleStep(1)
     self.controls[1].valueChanged.connect(self._Pump)
     self.controls[3].valueChanged.connect(self._Time)
+    self.SaveAs.pressed.connect(self._SaveAs)
     self.SdM = KineticEquations()
     self.population = self.canvas.figure.add_subplot(211)
     self._radiation = self.canvas.figure.add_subplot(212)
     self.controls[1].setValue(10)
     self.controls[3].setValue(10)
 
+  def _SaveAs(self):
+    fileName = QtWidgets.QFileDialog.getSaveFileName(self, "Save raw data", "./", "Data Files (*.txt *.dat)")
+    Np = len(self.SdM.x)
+    with open(fileName[0],'w') as fp:
+      if self.SdM.y2[0] is None:
+        fp.write('# t[ms]   N/No\n')
+        for i in range(Np):
+          fp.write("{:08.5f}  {:08.5f}\n".format(self.SdM.x[i], self.SdM.y1[i]))
+      else:
+        fp.write('# t[ms]   N/Ncw     Ncw/No    U/Ucw\n')
+        for i in range(Np):
+          fp.write("{:08.5f}  {:08.5f}  {:08.5f}  {:08.5f}\n".format(self.SdM.x[i], self.SdM.y1[i], self.SdM.y2[i], self.SdM.y3[i]))
+  
   def _Pump(self, value):
-    self.controls[0].setText(self.lbls[0].format(0.05*value))
+    self.controls[0].setText(self.lbls[0].format(0.025*value))
     self.Solve()
 
   def _Time(self, value):
-    self.controls[2].setText(self.lbls[1].format(0.1*value))
+    self.controls[2].setText(self.lbls[1].format(0.05*value))
     self.Solve()
 
   def Solve(self):
