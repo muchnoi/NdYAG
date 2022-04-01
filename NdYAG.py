@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys
 from matplotlib.backends.qt_compat import QtCore, QtWidgets
 if QtCore.qVersion() >= "5.": from matplotlib.backends.backend_qt5agg import FigureCanvas, NavigationToolbar2QT as NavigationToolbar
@@ -92,16 +92,19 @@ class ApplicationWindow(QtWidgets.QMainWindow):
   def _SaveAs(self):
     fileName = QtWidgets.QFileDialog.getSaveFileName(self, "Save raw data", "./", "Data Files (*.txt *.dat)")
     Np = len(self.SdM.x)
-    with open(fileName[0],'w') as fp:
-      if self.SdM.y2[0] is None:
-        fp.write('# t[ms]   N/No\n')
-        for i in range(Np):
-          fp.write("{:08.5f}  {:08.5f}\n".format(self.SdM.x[i], self.SdM.y1[i]))
-      else:
-        fp.write('# t[ms]   N/Ncw     Ncw/No    U/Ucw\n')
-        for i in range(Np):
-          fp.write("{:08.5f}  {:08.5f}  {:08.5f}  {:08.5f}\n".format(self.SdM.x[i], self.SdM.y1[i], self.SdM.y2[i], self.SdM.y3[i]))
-  
+    try:
+      with open(fileName[0],'w') as fp:
+        if self.SdM.y2[0] is None:
+          fp.write('# t[ms]   N/No\n')
+          for i in range(Np):
+            fp.write("{:08.5f}  {:08.5f}\n".format(self.SdM.x[i], self.SdM.y1[i]))
+        else:
+          fp.write('# t[ms]   N/Ncw     Ncw/No    U/Ucw\n')
+          for i in range(Np):
+            fp.write("{:08.5f}  {:08.5f}  {:08.5f}  {:08.5f}\n".format(self.SdM.x[i], self.SdM.y1[i], self.SdM.y2[i], self.SdM.y3[i]))
+    except FileNotFounError:
+      pass
+     
   def _Pump(self, value):
     self.controls[0].setText(self.lbls[0].format(0.025*value))
     self.Solve()
